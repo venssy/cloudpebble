@@ -63,16 +63,9 @@ def create_archive(project_id):
 
         send_td_event('cloudpebble_export_project', project=project)
 
-        if not settings.AWS_ENABLED:
-            outfile = '%s%s/%s.zip' % (settings.EXPORT_DIRECTORY, u, prefix)
-            os.makedirs(os.path.dirname(outfile), 0755)
-            shutil.copy(filename, outfile)
-            os.chmod(outfile, 0644)
-            return '%s%s/%s.zip' % (settings.EXPORT_ROOT, u, prefix)
-        else:
-            outfile = '%s/%s.zip' % (u, prefix)
-            s3.upload_file('export', outfile, filename, public=True, content_type='application/zip')
-            return '%s%s' % (settings.EXPORT_ROOT, outfile)
+        outfile = '%s/%s.zip' % (u, prefix)
+        s3.upload_file('export', outfile, filename, public=True, content_type='application/zip')
+        return '%s%s' % (settings.EXPORT_ROOT, outfile)
 
 
 @task(acks_late=True)
@@ -105,7 +98,7 @@ def get_filename_variant(file_name, resource_suffix_map):
     split = file_name_parts[0].split("~")
     tags = split[1:]
     try:
-        ids = [resource_suffix_map['~'+tag] for tag in tags]
+        ids = [resource_suffix_map['~' + tag] for tag in tags]
     except KeyError as key:
         raise ValueError('Unrecognised tag %s' % key)
     root_file_name = split[0] + file_name_parts[1]
@@ -145,7 +138,6 @@ def do_import_archive(project_id, archive, delete_project=False):
                 if len(contents) > 400:
                     raise Exception("Too many files in zip file.")
                 file_list = [x.filename for x in contents]
-
 
                 base_dir = find_project_root(file_list)
                 dir_end = len(base_dir)
@@ -223,9 +215,9 @@ def do_import_archive(project_id, archive, delete_project=False):
                                 filename = make_valid_filename(zipitem)
                                 if filename is False or not filename.startswith(RES_PATH):
                                     continue
-                                filename = filename[len(RES_PATH)+1:]
+                                filename = filename[len(RES_PATH) + 1:]
                                 try:
-                                    extracted = z.open("%s%s/%s"%(base_dir, RES_PATH, filename))
+                                    extracted = z.open("%s%s/%s" % (base_dir, RES_PATH, filename))
                                 except KeyError:
                                     print "Failed to open %s" % filename
                                     continue

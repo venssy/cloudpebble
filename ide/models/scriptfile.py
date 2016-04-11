@@ -10,7 +10,6 @@ class ScriptFile(S3File):
     """ ScriptFiles add support to TextFiles for last-modified timestamps and code folding """
     last_modified = models.DateTimeField(blank=True, null=True, auto_now=True)
     folded_lines = models.TextField(default="[]")
-    _create_local_if_not_exists = True
 
     def was_modified_since(self, expected_modification_time):
         if isinstance(expected_modification_time, int):
