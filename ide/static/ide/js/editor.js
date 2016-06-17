@@ -328,6 +328,7 @@ CloudPebble.Editor = (function() {
                 var throttled_check = _.throttle(function() {
                     if(sChecking) return;
                     sChecking = true;
+                    if (code_mirror.getValue().match(/\n/g).length < 5) return;
                     CloudPebble.YCM.request('errors', code_mirror)
                         .then(function(data) {
                             _.each(clang_lines, function(line) {
