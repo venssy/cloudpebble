@@ -530,8 +530,9 @@ table.kv-table .kv-remove {
 .compilation-pane #run-on-phone .btn,
 .compilation-pane #run-on-qemu .btn,
 .compilation-pane .build-buttons .btn {
-    width: 137px;
+    min-width: 137px;
     margin: 0 4px;
+    wdith: initial;
 }
 
 .compilation-pane #run-on-phone .btn:last-of-type,
@@ -684,6 +685,7 @@ table.build-results tr.pending .build-state {
 
 .media-tool-buttons button {
     width: initial;
+    min-width: 130px;
     margin-right: 10px;
 }
 
