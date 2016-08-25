@@ -15,7 +15,8 @@ RUN set -ex \
     71DCFD284A79C3B38668286BC97EC7A07EDE3FC1 \
     DD8F2338BAE7501E3DD5AC78C273792F7D83545D \
   ; do \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+    gpg --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
+    #gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
   done
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" \
